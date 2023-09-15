@@ -99,6 +99,9 @@ public abstract class DefaultGuiPattern implements GuiPattern {
 
   @Override
   public void patternize_button_icon(JButton button) {
+    button.setBorderPainted(false);
+    button.setOpaque(false);
+    button.setMargin(new Insets(0,0,0,0));
   }
   
   @Override

@@ -215,13 +215,6 @@ public class BackGroundGuiPattern extends DefaultGuiPattern {
   public void patternize_panel_background(JPanel panel) {
     if (isActiveGuiPattern(USE_DEFAULT_PATTERN)) panel.setBackground(BACKGROUND);
   }
-
-  @Override
-  public void patternize_button_icon(JButton button) {
-    button.setBorderPainted(false);
-    button.setOpaque(false);
-    button.setMargin(new Insets(0,0,0,0));
-  }
   
   @Override
   public void patternize_label(JLabel label) {
