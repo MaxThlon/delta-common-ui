@@ -10,21 +10,6 @@
     <artifactId>maven-definitions</artifactId>
     <version>2.0</version>
   </parent>
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <!-- This is to allow usage of sun.* classes -->
-          <compilerArgs>
-            <arg>-XDignore.symbol.file</arg>
-          </compilerArgs>
-          <fork>true</fork>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
   <dependencies>
     <dependency>
       <groupId>com.dam.delta4j</groupId>
@@ -35,6 +20,16 @@
       <groupId>com.dam.delta4j</groupId>
       <artifactId>delta-common-l10n</artifactId>
       <version>1.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.dam.delta4j</groupId>
+      <artifactId>delta-common-intf-ui</artifactId>
+      <version>1.25</version>
+    </dependency>
+    <dependency>
+      <groupId>com.formdev</groupId>
+      <artifactId>flatlaf</artifactId>
+      <version>3.2.1</version>
     </dependency>
     <dependency>
       <groupId>log4j</groupId>

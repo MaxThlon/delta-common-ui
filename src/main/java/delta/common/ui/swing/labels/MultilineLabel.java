@@ -7,6 +7,7 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.font.TextLayout;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -59,9 +60,14 @@ public class MultilineLabel extends JPanel
     {
       return _preferredSize;
     }
+    BufferedImage image = null;
     _baselines=new int[_text.length];
     Font font=getFont();
     Graphics2D graphics=(Graphics2D)getGraphics();
+    if (graphics == null) {
+      image = new BufferedImage(128, 128, BufferedImage.TYPE_4BYTE_ABGR);
+      graphics = image.createGraphics();
+    }
     Rectangle global = new Rectangle(0,0,0,0);
     int baseline=0;
     int index=0;

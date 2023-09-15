@@ -63,9 +63,7 @@ public class ToolbarController implements ActionListener
     if (_toolBar==null)
     {
       _toolBar=new JToolBar();
-      _toolBar.setBackground(GuiFactory.getBackgroundColor());
-      _toolBar.setOpaque(false);
-      _toolBar.setFloatable(false);
+      GuiFactory.getGuiPattern().patternize_ToolBar(_toolBar);
     }
     else
     {

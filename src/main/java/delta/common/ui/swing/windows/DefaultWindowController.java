@@ -4,15 +4,14 @@ import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Frame;
 import java.awt.Image;
-import java.awt.Window;
 import java.util.List;
 
 import javax.swing.JComponent;
-import javax.swing.JFrame;
 import javax.swing.JMenuBar;
-import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
+import delta.common.ui.swing.DeltaFrame;
+import delta.common.ui.swing.DeltaWindow;
 import delta.common.ui.swing.GuiFactory;
 import delta.common.ui.swing.icons.ApplicationIcons;
 
@@ -43,25 +42,24 @@ public class DefaultWindowController extends AbstractWindowController
    * Get the managed frame.
    * @return the managed frame.
    */
-  public JFrame getFrame()
+  public DeltaFrame getFrame()
   {
-    return (JFrame)getWindow();
+    DeltaWindow window=getWindow();
+    return (window instanceof DeltaFrame)?(DeltaFrame)window:null;
   }
 
   /**
    * Build the managed window.
    * @return the managed window.
    */
-  protected Window buildWindow()
+  protected DeltaWindow buildWindow()
   {
     return build();
   }
 
-  protected JFrame build()
+  protected DeltaFrame build()
   {
-    JFrame frame=new JFrame();
-    JPanel backgroundPanel=GuiFactory.buildBackgroundPanel(new BorderLayout());
-    frame.setContentPane(backgroundPanel);
+    DeltaFrame frame=GuiFactory.buildFrame();
     List<Image> icons=ApplicationIcons.getApplicationIcons();
     frame.setIconImages(icons);
     _window=frame;
@@ -90,7 +88,7 @@ public class DefaultWindowController extends AbstractWindowController
    */
   public void show()
   {
-    JFrame frame=getFrame();
+    DeltaFrame frame=getFrame();
     frame.setVisible(true);
   }
 
@@ -99,7 +97,7 @@ public class DefaultWindowController extends AbstractWindowController
    */
   public void bringToFront()
   {
-    JFrame frame=getFrame();
+    DeltaFrame frame=getFrame();
     frame.setVisible(true);
     frame.setState(Frame.NORMAL);
     frame.toFront();
@@ -111,7 +109,7 @@ public class DefaultWindowController extends AbstractWindowController
    */
   public void setTitle(String title)
   {
-    JFrame frame=getFrame();
+    DeltaFrame frame=getFrame();
     frame.setTitle(title);
   }
 }

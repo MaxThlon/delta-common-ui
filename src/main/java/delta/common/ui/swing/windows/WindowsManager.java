@@ -9,6 +9,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
+import delta.common.ui.swing.DeltaWindow;
+
 /**
  * Manages a set of windows.
  * @author DAM
@@ -52,7 +54,7 @@ public class WindowsManager
     String id=controller.getWindowIdentifier();
     if ((id!=null) && (id.length()>0))
     {
-      Window window=controller.getWindow();
+      DeltaWindow window=controller.getWindow();
       if (window!=null)
       {
         WindowListener wl=new WindowTracker(id);

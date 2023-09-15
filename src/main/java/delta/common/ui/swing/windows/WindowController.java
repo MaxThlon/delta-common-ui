@@ -1,7 +1,6 @@
 package delta.common.ui.swing.windows;
 
-import java.awt.Window;
-
+import delta.common.ui.swing.DeltaWindow;
 import delta.common.ui.swing.area.AreaController;
 import delta.common.utils.context.Context;
 import delta.common.utils.misc.TypedProperties;
@@ -16,7 +15,7 @@ public interface WindowController extends AreaController
    * Get the managed window.
    * @return the managed window.
    */
-  public Window getWindow();
+  public DeltaWindow getWindow();
 
   /**
    * Get the parent window controller, if any.

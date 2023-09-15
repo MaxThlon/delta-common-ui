@@ -14,7 +14,6 @@ import delta.common.ui.swing.GuiFactory;
  */
 public class ProgressBarController
 {
-  private static final Color DEFAULT_COLOR=Color.BLUE;
   private JProgressBar _progressBar;
 
   /**
@@ -38,10 +37,7 @@ public class ProgressBarController
   private JProgressBar buildProgressBar()
   {
     JProgressBar bar=new JProgressBar(SwingConstants.HORIZONTAL,0,100);
-    bar.setBackground(GuiFactory.getBackgroundColor());
-    bar.setBorderPainted(true);
-    bar.setStringPainted(true);
-    bar.setForeground(DEFAULT_COLOR);
+    GuiFactory.getGuiPattern().patternize_ProgressBar(bar);
     return bar;
   }
 

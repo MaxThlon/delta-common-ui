@@ -281,7 +281,7 @@ public class GenericTableController<POJO>
     POJO dataItem=_dataProvider.getAt(row);
     if (_actionListeners.size()>0)
     {
-      ActionEvent e=new ActionEvent(dataItem,ActionEvent.ACTION_PERFORMED,DOUBLE_CLICK,sourceEvent.getModifiers());
+      ActionEvent e=new ActionEvent(dataItem,ActionEvent.ACTION_PERFORMED,DOUBLE_CLICK,sourceEvent.getModifiersEx());
       ActionListener[] als=_actionListeners.toArray(new ActionListener[_actionListeners.size()]);
       for(ActionListener al : als)
       {

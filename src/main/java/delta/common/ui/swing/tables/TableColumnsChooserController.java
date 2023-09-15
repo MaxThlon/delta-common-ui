@@ -3,9 +3,9 @@ package delta.common.ui.swing.tables;
 import java.util.Comparator;
 import java.util.List;
 
-import javax.swing.JDialog;
 import javax.swing.JPanel;
 
+import delta.common.ui.swing.DeltaDialog;
 import delta.common.ui.swing.lists.OrderedItemsSelectionController;
 import delta.common.ui.swing.windows.DefaultFormDialogController;
 import delta.common.ui.swing.windows.WindowController;
@@ -45,9 +45,9 @@ public class TableColumnsChooserController<POJO> extends DefaultFormDialogContro
   }
 
   @Override
-  protected JDialog build()
+  protected DeltaDialog build()
   {
-    JDialog dialog=super.build();
+    DeltaDialog dialog=super.build();
     dialog.setTitle("Choose columns...");
     return dialog;
   }

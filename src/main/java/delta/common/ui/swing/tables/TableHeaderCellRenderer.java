@@ -6,15 +6,13 @@ import javax.swing.JComponent;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
-
-import sun.swing.table.DefaultTableCellHeaderRenderer;
+import javax.swing.table.DefaultTableCellRenderer;
 
 /**
  * A table header cell renderer that uses a tooltip.
  * @author DAM
  */
-@SuppressWarnings("restriction")
-public class TableHeaderCellRenderer extends DefaultTableCellHeaderRenderer
+public class TableHeaderCellRenderer extends DefaultTableCellRenderer
 {
   /**
    * Constructor.

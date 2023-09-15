@@ -3,14 +3,13 @@ package delta.common.ui.swing.windows;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Image;
-import java.awt.Window;
 import java.util.List;
 
 import javax.swing.JComponent;
-import javax.swing.JDialog;
 import javax.swing.JPanel;
-import javax.swing.WindowConstants;
 
+import delta.common.ui.swing.DeltaDialog;
+import delta.common.ui.swing.DeltaWindow;
 import delta.common.ui.swing.GuiFactory;
 import delta.common.ui.swing.icons.ApplicationIcons;
 
@@ -33,33 +32,25 @@ public class DefaultDialogController extends AbstractWindowController
    * Get the managed dialog.
    * @return the managed dialog.
    */
-  public JDialog getDialog()
+  public DeltaDialog getDialog()
   {
-    return (JDialog)getWindow();
+    return (DeltaDialog)getWindow();
   }
 
   /**
    * Build the managed window.
    * @return the managed window.
    */
-  protected Window buildWindow()
+  protected DeltaWindow buildWindow()
   {
     return build();
   }
 
-  protected JDialog build()
+  protected DeltaDialog build()
   {
-    Window parentWindow=getParentWindow();
+    DeltaWindow parentWindow=getParentWindow();
 
-    JDialog dialog;
-    if (parentWindow!=null)
-    {
-      dialog=new JDialog(parentWindow);
-    }
-    else
-    {
-      dialog=new JDialog();
-    }
+    DeltaDialog dialog = GuiFactory.buildDialog(parentWindow);
     _window=dialog;
     JPanel backgroundPanel=GuiFactory.buildBackgroundPanel(new BorderLayout());
     dialog.setContentPane(backgroundPanel);
@@ -71,7 +62,7 @@ public class DefaultDialogController extends AbstractWindowController
     {
       contentPane.add(component,BorderLayout.CENTER);
     }
-    dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+    
     return dialog;
   }
 
@@ -86,7 +77,7 @@ public class DefaultDialogController extends AbstractWindowController
    */
   public void show(boolean modal)
   {
-    JDialog dialog=getDialog();
+    DeltaDialog dialog=getDialog();
     dialog.setModal(modal);
     dialog.setVisible(true);
   }
@@ -96,7 +87,7 @@ public class DefaultDialogController extends AbstractWindowController
    */
   public void bringToFront()
   {
-    JDialog dialog=getDialog();
+    DeltaDialog dialog=getDialog();
     dialog.setVisible(true);
     dialog.toFront();
   }
@@ -107,7 +98,7 @@ public class DefaultDialogController extends AbstractWindowController
    */
   public void setTitle(String title)
   {
-    JDialog dialog=getDialog();
+    DeltaDialog dialog=getDialog();
     dialog.setTitle(title);
   }
 }

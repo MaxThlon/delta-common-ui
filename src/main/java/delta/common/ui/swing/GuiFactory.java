@@ -1,13 +1,12 @@
 package delta.common.ui.swing;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Insets;
 import java.awt.LayoutManager;
 import java.awt.Paint;
 import java.awt.Rectangle;
 import java.awt.TexturePaint;
+import java.awt.Window;
 import java.awt.image.BufferedImage;
 
 import javax.swing.BorderFactory;
@@ -24,35 +23,43 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollBar;
+import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.JViewport;
-import javax.swing.UIManager;
-import javax.swing.border.BevelBorder;
-import javax.swing.border.Border;
+import javax.swing.JTree;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.JTableHeader;
+import javax.swing.tree.TreeNode;
 
+import delta.common.ui.swing.file.DeltaJFileChooser;
 import delta.common.ui.swing.icons.IconsManager;
+import delta.common.ui.swing.pattern.GuiPattern;
+import delta.common.ui.swing.pattern.GuiPatternManager;
 import delta.common.utils.misc.Preferences;
 
 /**
  * Factory for GUI items.
  * @author DAM
  */
-public class GuiFactory
+public abstract class GuiFactory
 {
-  private static Color BACKGROUND=Color.WHITE;
-  private static Color FOREGROUND=Color.BLACK;
-
-  private static boolean USE_BACKGROUND_PATTERN=true;
+  private static class GuiPatternManagerPrivate extends GuiPatternManager {
+    @Override
+    public GuiPattern.GuiPatternFactory initialize(Preferences preferences) {
+      return super.initialize(preferences);
+    }
+  }
 
   private static Preferences _preferences;
-
+  private static GuiPatternManagerPrivate _guiPatternManager=null;
+  private static GuiPattern.GuiPatternFactory _guiPatternFactory=null;
+  
   /**
    * Get the UI preferences.
    * @return the UI preferences.
@@ -72,23 +79,103 @@ public class GuiFactory
   }
 
   /**
-   * Get the standard foreground color.
-   * @return a color.
+   * Get the Gui pattern manager.
+   * @return the Gui pattern manager.
    */
-  public static Color getForegroundColor()
+  public static GuiPatternManager getGuiPatternManager()
   {
-    return FOREGROUND;
+    return _guiPatternManager;
   }
 
   /**
-   * Get the standard background color.
-   * @return a color.
+   * Get the Gui pattern manager.
+   * @return the Gui pattern manager.
    */
-  public static Color getBackgroundColor()
+  public static GuiPattern getGuiPattern()
   {
-    return BACKGROUND;
+    return _guiPatternManager.getGuiPattern();
   }
 
+  /**
+   * getBackgroundColor.
+   * @return Color
+   */
+  @Deprecated
+  public static Color getBackgroundColor() {
+    return Color.WHITE;
+  }
+  
+  /**
+   * getForegroundColor.
+   * @return Color
+   */
+  @Deprecated
+  public static Color getForegroundColor()
+  {
+    return Color.BLACK;
+  }
+  
+  /**
+   * getBackgroundPaint.
+   * @return Paint
+   */
+  @Deprecated
+  public static Paint getBackgroundPaint()
+  {
+    BufferedImage backgroundImage=IconsManager.getImage("/gui/fond.png");
+    Rectangle r=new Rectangle(0,0,backgroundImage.getWidth(),backgroundImage.getHeight());
+    TexturePaint paint=new TexturePaint(backgroundImage,r);
+    return paint;
+  }
+
+  /**
+   * UI initializations.
+   */
+  public static void init() {
+    _guiPatternManager = new GuiPatternManagerPrivate();
+    updatePattern();
+  }
+  
+  /**
+   * Activate GuiPattern and unload if there is already one active.
+   */
+  public static void updatePattern() {
+    _guiPatternFactory = _guiPatternManager.initialize(_preferences);
+  }
+
+  /**
+   * Get a new frame.
+   * @return a new frame.
+   */
+  public static DeltaFrame buildFrame()
+  {
+    DeltaFrame frame=_guiPatternFactory.buildFrame();
+    getGuiPattern().patternize_Frame(frame);
+    return frame;
+  }
+
+  /**
+   * Get a new dialog.
+   * @param owner the {@code DeltaWindow} from which the dialog is displayed or
+   *     {@code null} if this dialog has no owner
+   * @return a new dialog.
+   */
+  public static DeltaDialog buildDialog(DeltaWindow owner)
+  {
+    DeltaDialog dialog=_guiPatternFactory.buildDialog(owner);
+    dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+    return dialog;
+  }
+
+  /**
+   * Get a new fileChooser.
+   * @return a new fileChooser.
+   */
+  public static DeltaFileChooser buildFileChooser()
+  {
+    return new DeltaJFileChooser();
+  }
+  
   /**
    * Get a new panel using the given layout.
    * @param layout Layout to use.
@@ -97,42 +184,8 @@ public class GuiFactory
   public static JPanel buildPanel(LayoutManager layout)
   {
     JPanel panel=new JPanel(layout);
-    if (USE_BACKGROUND_PATTERN)
-    {
-      panel.setOpaque(false);
-    }
-    else
-    {
-      panel.setBackground(BACKGROUND);
-      panel.setOpaque(true);
-    }
+    getGuiPattern().patternize_panel(panel);
     return panel;
-  }
-
-  /**
-   * Get the background pattern image.
-   * @return an image.
-   */
-  public static BufferedImage getBackgroundImage()
-  {
-    BufferedImage backgroundImage=IconsManager.getImage("/gui/fond.png");
-    return backgroundImage;
-  }
-
-  /**
-   * Get a painter for background.
-   * @return A background painter.
-   */
-  public static Paint getBackgroundPaint()
-  {
-    if (USE_BACKGROUND_PATTERN)
-    {
-      BufferedImage backgroundImage=GuiFactory.getBackgroundImage();
-      Rectangle r=new Rectangle(0,0,backgroundImage.getWidth(),backgroundImage.getHeight());
-      TexturePaint paint=new TexturePaint(backgroundImage,r);
-      return paint;
-    }
-    return BACKGROUND;
   }
 
   /**
@@ -142,17 +195,9 @@ public class GuiFactory
    */
   public static JPanel buildBackgroundPanel(LayoutManager layout)
   {
-    JPanel panel;
-    if (USE_BACKGROUND_PATTERN)
-    {
-      BufferedImage backgroundImage=getBackgroundImage();
-      panel=new BackgroundPanel(backgroundImage,layout);
-    }
-    else
-    {
-      panel=new JPanel(layout);
-      panel.setBackground(BACKGROUND);
-    }
+    JPanel panel=_guiPatternFactory.buildBackgroundPanel(layout);
+    getGuiPattern().patternize_panel_background(panel);
+    
     return panel;
   }
 
@@ -164,8 +209,6 @@ public class GuiFactory
   public static JButton buildButton(String label)
   {
     JButton b=new JButton(label);
-    b.setBackground(BACKGROUND);
-    b.setForeground(FOREGROUND);
     return b;
   }
 
@@ -175,13 +218,10 @@ public class GuiFactory
    */
   public static JButton buildIconButton()
   {
-    JButton b=new JButton((Icon)null);
-    b.setBackground(BACKGROUND);
-    b.setForeground(FOREGROUND);
-    b.setBorderPainted(false);
-    b.setOpaque(false);
-    b.setMargin(new Insets(0,0,0,0));
-    return b;
+    JButton button=new JButton((Icon)null);
+    getGuiPattern().patternize_button_icon(button);
+  
+    return button;
   }
 
   /**
@@ -208,9 +248,7 @@ public class GuiFactory
    */
   public static TitledBorder buildTitledBorder(String title)
   {
-    Border border=BorderFactory.createBevelBorder(BevelBorder.LOWERED,FOREGROUND,Color.GRAY);
-    TitledBorder titledBorder=BorderFactory.createTitledBorder(border,title);
-    titledBorder.setTitleColor(FOREGROUND);
+    TitledBorder titledBorder=BorderFactory.createTitledBorder(_guiPatternFactory.createBevelBorder(), title);
     return titledBorder;
   }
 
@@ -232,7 +270,7 @@ public class GuiFactory
    */
   public static JLabel buildLabel(String label, float size)
   {
-    return buildLabel(label,Float.valueOf(size));
+    return buildLabel(label, Float.valueOf(size));
   }
 
   /**
@@ -268,20 +306,10 @@ public class GuiFactory
   private static JLabel buildLabel(String label, Float size)
   {
     JLabel l=new JLabel(label);
-    l.setForeground(FOREGROUND);
-    if (USE_BACKGROUND_PATTERN)
-    {
-      l.setOpaque(false);
-    }
-    else
-    {
-      l.setBackground(BACKGROUND);
-      l.setOpaque(true);
-    }
-    if (size!=null)
-    {
-      l.setFont(l.getFont().deriveFont(size.floatValue()));
-    }
+    getGuiPattern().patternize_label(l);
+
+    if (size!=null) l.setFont(l.getFont().deriveFont(size.floatValue()));
+
     return l;
   }
 
@@ -292,18 +320,10 @@ public class GuiFactory
    */
   public static JCheckBox buildCheckbox(String label)
   {
-    JCheckBox checkbox=new JCheckBox();
-    checkbox.setText(label);
-    checkbox.setForeground(FOREGROUND);
-    if (USE_BACKGROUND_PATTERN)
-    {
-      checkbox.setOpaque(false);
-    }
-    else
-    {
-      checkbox.setBackground(BACKGROUND);
-      checkbox.setOpaque(true);
-    }
+    JCheckBox checkbox=new JCheckBox(label);
+
+    getGuiPattern().patternize_CheckBox(checkbox);
+
     return checkbox;
   }
 
@@ -314,10 +334,7 @@ public class GuiFactory
    */
   public static JTextField buildTextField(String text)
   {
-    JTextField tf=new JTextField();
-    tf.setText(text);
-    tf.setForeground(FOREGROUND);
-    tf.setBackground(BACKGROUND);
+    JTextField tf=new JTextField(text);
     return tf;
   }
 
@@ -329,15 +346,11 @@ public class GuiFactory
    */
   public static JTextArea buildTextArea(String text, boolean opaque)
   {
-    JTextArea tf=new JTextArea();
-    tf.setText(text);
-    tf.setForeground(FOREGROUND);
-    tf.setOpaque(opaque);
-    if (opaque)
-    {
-      tf.setBackground(BACKGROUND);
-    }
-    return tf;
+    JTextArea textArea=new JTextArea(text);
+    textArea.setOpaque(opaque);
+    getGuiPattern().patternize_TextArea(textArea);
+
+    return textArea;
   }
 
   /**
@@ -347,8 +360,6 @@ public class GuiFactory
   public static <T> JComboBox<T> buildComboBox()
   {
     JComboBox<T> cb=new JComboBox<T>();
-    cb.setBackground(BACKGROUND);
-    cb.setForeground(FOREGROUND);
     return cb;
   }
 
@@ -359,16 +370,8 @@ public class GuiFactory
   public static <T> JList<T> buildList()
   {
     JList<T> list=new JList<T>();
-    if (USE_BACKGROUND_PATTERN)
-    {
-      list.setOpaque(false);
-      list.setBackground(new Color(0,true));
-    }
-    else
-    {
-      list.setBackground(BACKGROUND);
-      list.setOpaque(true);
-    }
+    getGuiPattern().patternize_List(list);
+
     return list;
   }
 
@@ -379,25 +382,32 @@ public class GuiFactory
   public static JTable buildTable()
   {
     JTable table=new JTable();
-    table.setForeground(FOREGROUND);
     JTableHeader header=table.getTableHeader();
-    header.setForeground(FOREGROUND);
-    table.setGridColor(FOREGROUND);
+    getGuiPattern().patternize_Table_and_Header(table, header);
+
+    return table;
+  }
+
+  /**
+   * Get a new tree.
+   * @param rootNode 
+   * @return a new tree.
+   */
+  public static JTree buildTree (TreeNode rootNode)
+  {
+    JTree tree=new JTree ();
+    /*tree.setForeground(FOREGROUND);
     if (USE_BACKGROUND_PATTERN)
     {
-      table.setOpaque(false);
-      table.setBackground(new Color(0,true));
-      header.setOpaque(false);
-      header.setBackground(new Color(0,true));
+      tree.setOpaque(false);
+      tree.setBackground(new Color(0,true));
     }
     else
     {
-      table.setBackground(BACKGROUND);
-      table.setOpaque(true);
-      header.setBackground(BACKGROUND);
-      header.setOpaque(true);
-    }
-    return table;
+      tree.setBackground(BACKGROUND);
+      tree.setOpaque(true);
+    }*/
+    return tree;
   }
 
   /**
@@ -408,32 +418,8 @@ public class GuiFactory
   public static JScrollPane buildScrollPane(Component component)
   {
     JScrollPane scrollPane=new JScrollPane(component);
-    scrollPane.setForeground(FOREGROUND);
-    if (USE_BACKGROUND_PATTERN)
-    {
-      scrollPane.setOpaque(false);
-      // Make main viewport transparent
-      JViewport viewport=scrollPane.getViewport();
-      viewport.setOpaque(false);
-      viewport.setBackground(new Color(0,true));
-      // Make header transparent (for tables)
-      // - create a fake view so that the column header viewport gets created!
-      scrollPane.setColumnHeaderView(GuiFactory.buildPanel(new BorderLayout()));
-      JViewport hviewport=scrollPane.getColumnHeader();
-      hviewport.setOpaque(false);
-      hviewport.setBackground(new Color(0,true));
-    }
-    else
-    {
-      scrollPane.setBackground(BACKGROUND);
-      scrollPane.setOpaque(true);
-    }
-    JScrollBar vBar=scrollPane.getVerticalScrollBar();
-    if (vBar!=null)
-    {
-      vBar.setForeground(FOREGROUND);
-      vBar.setBackground(BACKGROUND);
-    }
+    getGuiPattern().patternize_ScrollPane(scrollPane);
+
     return scrollPane;
   }
 
@@ -443,10 +429,7 @@ public class GuiFactory
    */
   public static JTabbedPane buildTabbedPane()
   {
-    JTabbedPane tabbedPane=new JTabbedPane();
-    tabbedPane.setBackground(BACKGROUND);
-    tabbedPane.setForeground(FOREGROUND);
-    return tabbedPane;
+    return new JTabbedPane();
   }
 
   /**
@@ -455,10 +438,7 @@ public class GuiFactory
    */
   public static JMenuBar buildMenuBar()
   {
-    JMenuBar mb=new JMenuBar();
-    mb.setForeground(FOREGROUND);
-    mb.setBackground(BACKGROUND);
-    return mb;
+    return new JMenuBar();
   }
 
   /**
@@ -468,10 +448,7 @@ public class GuiFactory
    */
   public static JMenu buildMenu(String label)
   {
-    JMenu menu=new JMenu(label);
-    menu.setForeground(FOREGROUND);
-    menu.setBackground(BACKGROUND);
-    return menu;
+    return new JMenu(label);
   }
 
   /**
@@ -481,12 +458,22 @@ public class GuiFactory
    */
   public static JMenuItem buildMenuItem(String label)
   {
-    JMenuItem menuItem=new JMenuItem(label);
-    menuItem.setForeground(FOREGROUND);
-    menuItem.setBackground(BACKGROUND);
-    return menuItem;
+    return new JMenuItem(label);
   }
 
+  /**
+   * Get a progress bar.
+   * @param orient  the desired orientation of the progress bar
+   * @param min  the minimum value of the progress bar
+   * @param max  the maximum value of the progress bar
+   * @return a new progress bar.
+   */
+  public static JProgressBar buildProgressBar(int orient, int min, int max) {
+    JProgressBar progressBar=new JProgressBar(SwingConstants.HORIZONTAL,0,100);
+    getGuiPattern().patternize_ProgressBar(progressBar);
+    return progressBar;
+  }
+  
   /**
    * Build a HTML panel.
    * @return a HTML panel.
@@ -498,17 +485,7 @@ public class GuiFactory
     editor.setOpaque(false);
     return editor;
   }
-
-  /**
-   * General UI initializations.
-   */
-  public static void init()
-  {
-    UIManager.put("OptionPane.background",BACKGROUND);
-    UIManager.put("Panel.background",BACKGROUND);
-    UIManager.put("OptionPane.messageForeground", FOREGROUND);
-  }
-
+  
   /**
    * Show a modal question dialog.
    * @param parent Parent component.
@@ -521,6 +498,18 @@ public class GuiFactory
   {
     int ret=JOptionPane.showConfirmDialog(parent,message,title,optionType);
     return ret;
+  }
+  
+  /**
+   * Show a modal question dialog.
+   * @param parent Parent component.
+   * @param message Question message.
+   * @param title Title of the dialog window.
+   * @param optionType Options configuration.
+   * @return A result code (see {@link JOptionPane}).
+   */
+  public static int showQuestionDialog(DeltaComponent parent, String message, String title, int optionType) {
+    return showQuestionDialog((parent instanceof Component)?(Component)parent:null, message, title, optionType);
   }
 
   /**
@@ -535,6 +524,17 @@ public class GuiFactory
   }
 
   /**
+   * Show a information dialog.
+   * @param parent Parent component.
+   * @param message Information message.
+   * @param title Title of the dialog window.
+   */
+  public static void showInformationDialog(DeltaComponent parent, String message, String title)
+  {
+    showInformationDialog((parent instanceof Component)?(Component)parent:null,message,title);
+  }
+
+  /**
    * Show an error dialog.
    * @param parent Parent component.
    * @param message Information message.
@@ -542,6 +542,44 @@ public class GuiFactory
    */
   public static void showErrorDialog(Component parent, String message, String title)
   {
-    JOptionPane.showMessageDialog(parent,message,title,JOptionPane.ERROR_MESSAGE);
+    JOptionPane.showMessageDialog((parent instanceof Component)?(Component)parent:null,message,title,JOptionPane.ERROR_MESSAGE);
   }
+
+  /**
+   * Show an error dialog.
+   * @param parent Parent component.
+   * @param message Information message.
+   * @param title Title of the dialog window.
+   */
+  public static void showErrorDialog(DeltaComponent parent, String message, String title)
+  {
+    showErrorDialog((parent instanceof Component)?(Component)parent:null,message,title);
+  }
+  
+  /**
+   * Returns the root component for the current component tree.
+   *
+   * @param c the component
+   * @return the first ancestor of c that's a Window or the last Applet ancestor
+   */
+  public static DeltaComponent getRoot(Component c) {
+    Component root=SwingUtilities.getRoot(c);
+    return (root instanceof DeltaComponent)?(DeltaComponent)root:null;
+  }
+  
+  /**
+   * Returns the first <code>Window </code> ancestor of <code>c</code>, or
+   * {@code null} if <code>c</code> is not contained inside a <code>Window</code>.
+   *
+   * @param c <code>Component</code> to get <code>Window</code> ancestor
+   *        of.
+   * @return the first <code>Window </code> ancestor of <code>c</code>, or
+   *         {@code null} if <code>c</code> is not contained inside a
+   *         <code>Window</code>.
+   */
+  public static DeltaWindow getWindowAncestor(Component c) {
+    Window window=SwingUtilities.getWindowAncestor(c);
+    return (window instanceof DeltaWindow)?(DeltaWindow)window:null;
+  }
+  
 }

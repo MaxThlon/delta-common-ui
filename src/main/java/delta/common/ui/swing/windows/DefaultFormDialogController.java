@@ -1,7 +1,6 @@
 package delta.common.ui.swing.windows;
 
 import java.awt.BorderLayout;
-import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -10,11 +9,12 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
-import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JRootPane;
 import javax.swing.KeyStroke;
 
+import delta.common.ui.swing.DeltaDialog;
+import delta.common.ui.swing.DeltaWindow;
 import delta.common.ui.swing.GuiFactory;
 import delta.common.ui.swing.OKCancelPanelController;
 
@@ -42,14 +42,14 @@ public class DefaultFormDialogController<T> extends DefaultDialogController
   }
 
   @Override
-  protected JDialog build()
+  protected DeltaDialog build()
   {
-    JDialog dialog=super.build();
+    DeltaDialog dialog=super.build();
     dialog.pack();
     WindowController controller=getParentController();
     if (controller!=null)
     {
-      Window parentWindow=controller.getWindow();
+      DeltaWindow parentWindow=controller.getWindow();
       dialog.setLocationRelativeTo(parentWindow);
     }
     initShortcuts(dialog);
@@ -78,7 +78,7 @@ public class DefaultFormDialogController<T> extends DefaultDialogController
     return panel;
   }
 
-  private void initShortcuts(JDialog dialog)
+  private void initShortcuts(DeltaDialog dialog)
   {
     // OK
     {
@@ -114,8 +114,9 @@ public class DefaultFormDialogController<T> extends DefaultDialogController
 
   private void removeShortcuts()
   {
-    JDialog dialog=(JDialog)getUnsafeWindow();
-    if (dialog!=null)
+    DeltaWindow window=getUnsafeWindow();
+    DeltaDialog dialog=(window instanceof DeltaDialog)?(DeltaDialog)window:null;
+    if (dialog != null)
     {
       // Enter
       {
