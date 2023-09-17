@@ -2,7 +2,6 @@ package delta.common.ui.swing.pattern;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Insets;
 import java.awt.LayoutManager;
 import java.awt.Paint;
 import java.awt.Rectangle;
@@ -10,7 +9,6 @@ import java.awt.TexturePaint;
 import java.awt.image.BufferedImage;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JList;

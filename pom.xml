@@ -9,6 +9,7 @@
     <groupId>com.dam.delta4j</groupId>
     <artifactId>maven-definitions</artifactId>
     <version>2.0</version>
+    <relativePath>../delta-misc/maven/maven-definitions/2.0</relativePath>
   </parent>
   <dependencies>
     <dependency>

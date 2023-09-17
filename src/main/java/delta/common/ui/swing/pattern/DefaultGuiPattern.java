@@ -92,7 +92,9 @@ public abstract class DefaultGuiPattern implements GuiPattern {
   public void patternize_Frame(DeltaFrame frame) {}
 
   @Override
-  public void patternize_panel(JPanel panel) {}
+  public void patternize_panel(JPanel panel) {
+    panel.setOpaque(false);
+  }
 
   @Override
   public void patternize_panel_background(JPanel panel) {}

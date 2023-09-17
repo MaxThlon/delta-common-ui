@@ -9,17 +9,21 @@
     <groupId>com.dam.delta4j</groupId>
     <artifactId>maven-definitions-kotlin</artifactId>
     <version>2.0</version>
-    <relativePath/>
+    <relativePath>../../delta-misc/maven/maven-definitions/2.0/2.0.kotlin</relativePath>
   </parent>
-  <build>
+<build>
   <plugins>
     <plugin>
       <groupId>org.jetbrains.kotlin</groupId>
       <artifactId>kotlin-maven-plugin</artifactId>
       <version>${kotlin.version}</version>
+      <configuration>
+        <jvmTarget>${java_version}</jvmTarget>
+      </configuration>
       <executions>
         <execution>
           <id>compile</id>
+          <goals><goal>compile</goal></goals>
           <configuration>
             <sourceDirs>
               <sourceDir>${project.basedir}/src/main/kotlin</sourceDir>
@@ -29,6 +33,7 @@
         </execution>
         <execution>
           <id>test-compile</id>
+          <goals><goal>test-compile</goal></goals>
           <configuration>
             <sourceDirs>
               <sourceDir>${project.basedir}/src/test/kotlin</sourceDir>
