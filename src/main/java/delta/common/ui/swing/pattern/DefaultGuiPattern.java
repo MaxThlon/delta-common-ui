@@ -1,13 +1,8 @@
 package delta.common.ui.swing.pattern;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Insets;
-import java.awt.LayoutManager;
-import java.awt.Window;
-import java.awt.image.BufferedImage;
 
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
@@ -19,64 +14,107 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JToolBar;
 import javax.swing.UIManager;
-import javax.swing.border.BevelBorder;
-import javax.swing.border.Border;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.table.JTableHeader;
 
 import org.apache.log4j.Logger;
 
-import delta.common.ui.swing.DeltaDialog;
 import delta.common.ui.swing.DeltaFrame;
-import delta.common.ui.swing.DeltaWindow;
-import delta.common.ui.swing.GuiFactory;
-import delta.common.ui.swing.dialog.DeltaJDialog;
-import delta.common.ui.swing.icons.IconsManager;
-import delta.common.ui.swing.pattern.BackGroundGuiPattern.BackGroundGuiFactory;
-import delta.common.ui.swing.pattern.GuiPattern.GuiPatternFactory;
-import delta.common.ui.swing.windows.DeltaJFrame;
+import delta.common.ui.swing.theme.Theme;
 
 /**
- * BackGroundGuiPattern.
+ * DefaultGuiPattern.
  * @author MaxThlon
  */
-public abstract class DefaultGuiPattern implements GuiPattern {
+public class DefaultGuiPattern implements GuiPattern {
+  private static final Logger _logger=Logger.getLogger(DefaultGuiPattern.class);
   
-  /**
-   * BackGroundGuiFactory.
-   * @author MaxThlon
-   */
-  public static class DefaultGuiGuiFactory implements GuiPatternFactory {
+  protected static final Color TRANSPARENT=new Color(0,true);
+  
+  @Override
+  public void initialize(Theme theme) {
+    try
+    {
+      UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+    }
+    catch (ClassNotFoundException|InstantiationException|IllegalAccessException|UnsupportedLookAndFeelException e)
+    {
+      _logger.warn(e);
+    }
+    
+    Color BACKGROUND=Color.WHITE;
+    Color FOREGROUND=Color.BLACK;
+    Color FOREGROUND_PROGRESS_BAR=Color.BLUE;
+    
+    //lookAndFeel.
+    UIManager.put("background",BACKGROUND);
+    UIManager.put("foreground",FOREGROUND);
+    UIManager.put("transparent",TRANSPARENT);
 
-    @Override
-    public DeltaFrame buildFrame() {
-      DeltaFrame frame=new DeltaJFrame();
-      JPanel backgroundPanel=GuiFactory.buildBackgroundPanel(new BorderLayout());
-      frame.setContentPane(backgroundPanel);
+    UIManager.put("OptionPane.background",BACKGROUND);
+    UIManager.put("OptionPane.messageForeground", FOREGROUND);
 
-      return frame;
-    }
+    UIManager.put("Panel.background",BACKGROUND);
+
+    UIManager.put("Button.foreground", FOREGROUND);
+    UIManager.put("Button.background", BACKGROUND);
     
-    @Override
-    public DeltaDialog buildDialog(DeltaWindow owner) {
-      return new DeltaJDialog((Window)owner);
-    }
+    UIManager.put("Label.foreground", FOREGROUND);
     
-    @Override
-    public JPanel buildBackgroundPanel(LayoutManager layout) {
-      return new JPanel(layout);
-    }
+    UIManager.put("TitledBorder.titleColor", FOREGROUND);
     
-    @Override
-    public Border createBevelBorder() {
-      return BorderFactory.createBevelBorder(BevelBorder.LOWERED);
-    }
+    UIManager.put("CheckBox.foreground", FOREGROUND);
+    
+    UIManager.put("TextField.foreground", FOREGROUND);
+    UIManager.put("TextField.background", BACKGROUND);
+    
+    UIManager.put("TextArea.foreground", FOREGROUND);
+    
+    UIManager.put("ComboBox.foreground", FOREGROUND);
+    UIManager.put("ComboBox.background", BACKGROUND);
+    
+    
+    UIManager.put("TextField.foreground", FOREGROUND);
+    UIManager.put("List.background", BACKGROUND);
+    
+    UIManager.put("TextField.foreground", FOREGROUND);
+    UIManager.put("TextField.background", BACKGROUND);
+    
+    UIManager.put("Table.foreground", FOREGROUND);
+    UIManager.put("Table.GridColor", FOREGROUND);
+    UIManager.put("TableHeader.foreground", FOREGROUND);
+    
+    UIManager.put("Table.background", BACKGROUND);
+    UIManager.put("TableHeader.background", BACKGROUND);
+  
+    UIManager.put("ScrollPane.foreground", FOREGROUND);
+    UIManager.put("ScrollPane.background", BACKGROUND);
+
+    UIManager.put("Button.foreground", FOREGROUND);
+    UIManager.put("Button.background", BACKGROUND);
+    UIManager.put("ScrollBar.foreground", FOREGROUND);
+    UIManager.put("ScrollBar.background", BACKGROUND);
+    
+    UIManager.put("TabbedPane.foreground", FOREGROUND);
+    UIManager.put("TabbedPane.background", BACKGROUND);
+    
+    UIManager.put("MenuBar.foreground", FOREGROUND);
+    UIManager.put("MenuBar.background", BACKGROUND);
+    UIManager.put("Menu.foreground", FOREGROUND);
+    UIManager.put("Menu.background", BACKGROUND);
+    UIManager.put("MenuItem.foreground", FOREGROUND);
+    UIManager.put("MenuItem.background", BACKGROUND);
+    
+    
+    UIManager.put("ToolBar.background", BACKGROUND);
+
+    UIManager.put("ProgressBar.background", BACKGROUND);
+    UIManager.put("ProgressBar.foreground", FOREGROUND_PROGRESS_BAR);
   }
   
   @Override
-  public Class<? extends GuiPatternFactory> getGuiPatternFactoryClass() {
-    return DefaultGuiGuiFactory.class;
-  }
-
+  public void uninitialize() {}
+  
   @SuppressWarnings("unused")
   private static void logUIManager() {
     Logger _logger=Logger.getLogger(DefaultGuiPattern.class);

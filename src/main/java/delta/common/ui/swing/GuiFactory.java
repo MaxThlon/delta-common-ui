@@ -4,10 +4,9 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.LayoutManager;
 import java.awt.Paint;
-import java.awt.Rectangle;
-import java.awt.TexturePaint;
 import java.awt.Window;
 import java.awt.image.BufferedImage;
+import java.util.stream.Stream;
 
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
@@ -32,7 +31,7 @@ import javax.swing.JTextField;
 import javax.swing.JTree;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
-import javax.swing.WindowConstants;
+import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.JTableHeader;
 import javax.swing.tree.TreeNode;
@@ -40,7 +39,9 @@ import javax.swing.tree.TreeNode;
 import delta.common.ui.swing.file.DeltaJFileChooser;
 import delta.common.ui.swing.icons.IconsManager;
 import delta.common.ui.swing.pattern.GuiPattern;
+import delta.common.ui.swing.pattern.GuiPatternConfiguration;
 import delta.common.ui.swing.pattern.GuiPatternManager;
+import delta.common.ui.swing.pattern.factory.GuiPatternFactory;
 import delta.common.utils.misc.Preferences;
 
 /**
@@ -49,16 +50,9 @@ import delta.common.utils.misc.Preferences;
  */
 public abstract class GuiFactory
 {
-  private static class GuiPatternManagerPrivate extends GuiPatternManager {
-    @Override
-    public GuiPattern.GuiPatternFactory initialize(Preferences preferences) {
-      return super.initialize(preferences);
-    }
-  }
-
   private static Preferences _preferences;
-  private static GuiPatternManagerPrivate _guiPatternManager=null;
-  private static GuiPattern.GuiPatternFactory _guiPatternFactory=null;
+  private static GuiPatternManager _guiPatternManager;
+  private static GuiPatternFactory _guiPatternFactory;
   
   /**
    * Get the UI preferences.
@@ -79,12 +73,21 @@ public abstract class GuiFactory
   }
 
   /**
-   * Get the Gui pattern manager.
-   * @return the Gui pattern manager.
+   * Get the gui pattern manager.
+   * @return the gui pattern manager.
    */
   public static GuiPatternManager getGuiPatternManager()
   {
     return _guiPatternManager;
+  }
+
+  /**
+   * Set the Gui pattern manager.
+   * @param guiPatternManager
+   */
+  public static void setGuiPatternManager(GuiPatternManager guiPatternManager)
+  {
+    _guiPatternManager=guiPatternManager;
   }
 
   /**
@@ -100,47 +103,48 @@ public abstract class GuiFactory
    * getBackgroundColor.
    * @return Color
    */
-  @Deprecated
-  public static Color getBackgroundColor() {
-    return Color.WHITE;
+  public static Color getBackgroundColor()
+  {
+    return UIManager.getColor("background");
   }
   
   /**
    * getForegroundColor.
    * @return Color
    */
-  @Deprecated
   public static Color getForegroundColor()
   {
-    return Color.BLACK;
+    return UIManager.getColor("foreground");
   }
   
   /**
    * getBackgroundPaint.
    * @return Paint
    */
-  @Deprecated
   public static Paint getBackgroundPaint()
   {
-    BufferedImage backgroundImage=IconsManager.getImage("/gui/fond.png");
-    Rectangle r=new Rectangle(0,0,backgroundImage.getWidth(),backgroundImage.getHeight());
-    TexturePaint paint=new TexturePaint(backgroundImage,r);
-    return paint;
+    return _guiPatternFactory.getBackgroundPaint();
   }
 
   /**
    * UI initializations.
    */
   public static void init() {
-    _guiPatternManager = new GuiPatternManagerPrivate();
-    updatePattern();
+    if (_guiPatternManager == null) {
+      _guiPatternManager = new GuiPatternManager(new GuiPatternConfiguration());
+    }
+    _guiPatternManager.initialize();
+    if (_guiPatternFactory == null) {
+      _guiPatternFactory=_guiPatternManager.newGuiPatternFactory();
+    }
+    _guiPatternManager.loadSkin();
   }
-  
+
   /**
-   * Activate GuiPattern and unload if there is already one active.
+   * reloadCache.
    */
-  public static void updatePattern() {
-    _guiPatternFactory = _guiPatternManager.initialize(_preferences);
+  public static void reloadCache() {
+    _guiPatternManager.reloadAssets();
   }
 
   /**
@@ -163,7 +167,6 @@ public abstract class GuiFactory
   public static DeltaDialog buildDialog(DeltaWindow owner)
   {
     DeltaDialog dialog=_guiPatternFactory.buildDialog(owner);
-    dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
     return dialog;
   }
 
@@ -473,7 +476,7 @@ public abstract class GuiFactory
     getGuiPattern().patternize_ProgressBar(progressBar);
     return progressBar;
   }
-  
+
   /**
    * Build a HTML panel.
    * @return a HTML panel.
@@ -484,6 +487,35 @@ public abstract class GuiFactory
     editor.setEditable(false);
     editor.setOpaque(false);
     return editor;
+  }
+
+  /**
+   * Load and cache {@code BufferedImage} using the given imageAssetIds.
+   * @param imageAssetIds
+   */
+  public static void loadAssetImages(Stream<String> imageAssetIds)
+  {
+    _guiPatternManager.loadAssetImages(imageAssetIds);
+  }
+
+  /**
+   * Find or create a {@code BufferedImage} using the given imageAssetId.
+   * @param iconAssetId
+   * @return a {@code BufferedImage}.
+   */
+  public static ImageIcon findAssetIcon(String iconAssetId)
+  {
+    return _guiPatternManager.findAssetIcon(iconAssetId);
+  }
+
+  /**
+   * Find or create a {@code BufferedImage} using the given imageAssetId.
+   * @param imageAssetId
+   * @return a {@code BufferedImage}.
+   */
+  public static BufferedImage findAssetImage(String imageAssetId)
+  {
+    return _guiPatternManager.findAssetImage(imageAssetId);
   }
   
   /**
@@ -581,5 +613,4 @@ public abstract class GuiFactory
     Window window=SwingUtilities.getWindowAncestor(c);
     return (window instanceof DeltaWindow)?(DeltaWindow)window:null;
   }
-  
 }

@@ -1,4 +1,4 @@
-package delta.common.ui.swing.dialog;
+package delta.common.ui.swing.windows;
 
 import java.awt.Component;
 import java.awt.Window;

@@ -50,7 +50,7 @@ public class DefaultDialogController extends AbstractWindowController
   {
     DeltaWindow parentWindow=getParentWindow();
 
-    DeltaDialog dialog = GuiFactory.buildDialog(parentWindow);
+    DeltaDialog dialog=GuiFactory.buildDialog(parentWindow);
     _window=dialog;
     JPanel backgroundPanel=GuiFactory.buildBackgroundPanel(new BorderLayout());
     dialog.setContentPane(backgroundPanel);
