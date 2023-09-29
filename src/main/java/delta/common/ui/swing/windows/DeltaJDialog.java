@@ -4,6 +4,7 @@ import java.awt.Component;
 import java.awt.Window;
 
 import javax.swing.JDialog;
+import javax.swing.WindowConstants;
 
 import delta.common.ui.swing.DeltaComponent;
 import delta.common.ui.swing.DeltaDialog;
@@ -18,6 +19,7 @@ public class DeltaJDialog extends JDialog implements DeltaDialog {
    */
   public DeltaJDialog(Window owner){
     super(owner);
+    setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
   }
 
   @Override
