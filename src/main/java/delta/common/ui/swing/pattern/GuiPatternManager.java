@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -45,8 +46,7 @@ public class GuiPatternManager {
         put("Default", DefaultGuiPatternFactory::new);
         put("Background", BackGroundGuiPatternFactory::new);
         put("Desktop", DesktopGuiPatternFactory::new);
-      }
-  };
+      }};
   
   /*
    * Default GuiPatten supplier.
@@ -116,11 +116,12 @@ public class GuiPatternManager {
    * Get the skin list.
    * @return .
    */
-  public List<ImmutablePair<String, Path>> getSkins()
+  public Map<String, Path> getSkins()
   {
-    List<ImmutablePair<String, Path>> skins=loadSkinList();
-    skins.add(0, new ImmutablePair<String,Path>(GuiPatternConfiguration.DEFAULT_SKIN_NAME, null));
-    return skins;
+    return Stream.concat(
+        Stream.of(new ImmutablePair<String,Path>(GuiPatternConfiguration.DEFAULT_SKIN_NAME, null)),
+        loadSkinList()
+    ).collect(LinkedHashMap::new, (map, pair)-> map.put(pair.getLeft(), pair.getRight()), LinkedHashMap::putAll);
   }
 
   /**
@@ -130,6 +131,15 @@ public class GuiPatternManager {
     return _guiPattern;
   }
 
+  /**
+   * Get the user data path for skins.
+   * @return a directory path.
+   */
+  public String getSkinName()
+  {
+    return (_skin != null)?_skin.getName():GuiPatternConfiguration.DEFAULT_SKIN_NAME;
+  }
+  
   /**
    * @return {@code GuiPatternFactory} instance
    */
@@ -246,8 +256,8 @@ public class GuiPatternManager {
    * Load skin list data.
    * @return Map of skins names and path.
    */
-  protected List<ImmutablePair<String, Path>> loadSkinList() {
-    return new ArrayList<ImmutablePair<String,Path>>();
+  protected Stream<ImmutablePair<String, Path>> loadSkinList() {
+    return Stream.of();
   }
 
   /**

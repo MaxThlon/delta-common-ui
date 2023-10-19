@@ -2,7 +2,6 @@ package delta.common.ui.swing.windows;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
-import java.awt.Frame;
 import java.awt.Image;
 import java.util.List;
 
@@ -10,8 +9,8 @@ import javax.swing.JComponent;
 import javax.swing.JMenuBar;
 import javax.swing.WindowConstants;
 
-import delta.common.ui.swing.DeltaFrame;
-import delta.common.ui.swing.DeltaWindow;
+import delta.common.ui.swing.Window;
+import delta.common.ui.swing.Frame;
 import delta.common.ui.swing.GuiFactory;
 import delta.common.ui.swing.icons.ApplicationIcons;
 
@@ -42,24 +41,24 @@ public class DefaultWindowController extends AbstractWindowController
    * Get the managed frame.
    * @return the managed frame.
    */
-  public DeltaFrame getFrame()
+  public Frame getFrame()
   {
-    DeltaWindow window=getWindow();
-    return (window instanceof DeltaFrame)?(DeltaFrame)window:null;
+    Window window=getWindow();
+    return (window instanceof Frame)?(Frame)window:null;
   }
 
   /**
    * Build the managed window.
    * @return the managed window.
    */
-  protected DeltaWindow buildWindow()
+  protected Window buildWindow()
   {
     return build();
   }
 
-  protected DeltaFrame build()
+  protected Frame build()
   {
-    DeltaFrame frame=GuiFactory.buildFrame();
+    Frame frame=GuiFactory.buildFrame();
     List<Image> icons=ApplicationIcons.getApplicationIcons();
     frame.setIconImages(icons);
     _window=frame;
@@ -88,7 +87,7 @@ public class DefaultWindowController extends AbstractWindowController
    */
   public void show()
   {
-    DeltaFrame frame=getFrame();
+    Frame frame=getFrame();
     frame.setVisible(true);
   }
 
@@ -97,9 +96,9 @@ public class DefaultWindowController extends AbstractWindowController
    */
   public void bringToFront()
   {
-    DeltaFrame frame=getFrame();
+    Frame frame=getFrame();
     frame.setVisible(true);
-    frame.setState(Frame.NORMAL);
+    frame.setState(java.awt.Frame.NORMAL);
     frame.toFront();
   }
 
@@ -109,7 +108,7 @@ public class DefaultWindowController extends AbstractWindowController
    */
   public void setTitle(String title)
   {
-    DeltaFrame frame=getFrame();
+    Frame frame=getFrame();
     frame.setTitle(title);
   }
 }

@@ -12,7 +12,7 @@ import javax.swing.JTextArea;
 import javax.swing.JToolBar;
 import javax.swing.table.JTableHeader;
 
-import delta.common.ui.swing.DeltaFrame;
+import delta.common.ui.swing.Frame;
 import delta.common.ui.swing.theme.Theme;
 
 /**
@@ -31,10 +31,10 @@ public interface GuiPattern {
    */
   void uninitialize();
   /**
-   * patternize {@Code GuiPattern} specific properties to {@Code DeltaFrame}
-   * @param frame {@Code DeltaFrame}
+   * patternize {@Code GuiPattern} specific properties to {@Code Frame}
+   * @param frame {@Code Frame}
    */
-  void patternize_Frame(DeltaFrame frame);
+  void patternize_Frame(Frame frame);
   
   /**
    * patternize {@Code GuiPattern} specific properties to {@Code JPanel}

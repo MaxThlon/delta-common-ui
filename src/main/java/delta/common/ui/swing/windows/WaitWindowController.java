@@ -10,7 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.SwingConstants;
 
-import delta.common.ui.swing.DeltaDialog;
+import delta.common.ui.swing.Dialog;
 import delta.common.ui.swing.GuiFactory;
 
 /**
@@ -96,7 +96,7 @@ public class WaitWindowController
     panel.add(_label,c);
     c.gridy=1;c.fill=GridBagConstraints.BOTH;
     panel.add(_progressBar,c);
-    DeltaDialog dialog=GuiFactory.buildDialog(null);
+    Dialog dialog=GuiFactory.buildDialog(null);
     dialog.setContentPane(panel);
     dialog.pack();
     dialog.setModal(false);

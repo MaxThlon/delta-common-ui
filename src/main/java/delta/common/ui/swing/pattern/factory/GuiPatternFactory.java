@@ -6,9 +6,9 @@ import java.awt.Paint;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 
-import delta.common.ui.swing.DeltaDialog;
-import delta.common.ui.swing.DeltaFrame;
-import delta.common.ui.swing.DeltaWindow;
+import delta.common.ui.swing.Dialog;
+import delta.common.ui.swing.Frame;
+import delta.common.ui.swing.Window;
 
 /**
  * Interface for all GuiPatternFactories.
@@ -25,15 +25,15 @@ public interface GuiPatternFactory {
    * Get a new frame.
    * @return a new frame.
    */
-  DeltaFrame buildFrame();
+  Frame buildFrame();
 
   /**
    * Get a new dialog.
-   * @param owner the {@code DeltaWindow} from which the dialog is displayed or
+   * @param owner the {@code Window} from which the dialog is displayed or
    *     {@code null} if this dialog has no owner
    * @return a new dialog.
    */
-  DeltaDialog buildDialog(DeltaWindow owner);
+  Dialog buildDialog(Window owner);
   
   /**
    * Build a background panel.

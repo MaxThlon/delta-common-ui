@@ -13,8 +13,8 @@ import javax.swing.JPanel;
 import javax.swing.JRootPane;
 import javax.swing.KeyStroke;
 
-import delta.common.ui.swing.DeltaDialog;
-import delta.common.ui.swing.DeltaWindow;
+import delta.common.ui.swing.Dialog;
+import delta.common.ui.swing.Window;
 import delta.common.ui.swing.GuiFactory;
 import delta.common.ui.swing.OKCancelPanelController;
 
@@ -42,14 +42,14 @@ public class DefaultDisplayDialogController<T> extends DefaultDialogController
   }
 
   @Override
-  protected DeltaDialog build()
+  protected Dialog build()
   {
-    DeltaDialog dialog=super.build();
+    Dialog dialog=super.build();
     dialog.pack();
     WindowController controller=getParentController();
     if (controller!=null)
     {
-      DeltaWindow parentWindow=controller.getWindow();
+      Window parentWindow=controller.getWindow();
       dialog.setLocationRelativeTo(parentWindow);
     }
     initShortcuts(dialog);
@@ -77,7 +77,7 @@ public class DefaultDisplayDialogController<T> extends DefaultDialogController
     return panel;
   }
 
-  private void initShortcuts(DeltaDialog dialog)
+  private void initShortcuts(Dialog dialog)
   {
     // OK
     {
@@ -113,8 +113,8 @@ public class DefaultDisplayDialogController<T> extends DefaultDialogController
 
   private void removeShortcuts()
   {
-    DeltaWindow window=getUnsafeWindow();
-    DeltaDialog dialog=(window instanceof DeltaDialog)?(DeltaDialog)window:null;
+    Window window=getUnsafeWindow();
+    Dialog dialog=(window instanceof Dialog)?(Dialog)window:null;
     if (dialog != null)
     {
       // Enter

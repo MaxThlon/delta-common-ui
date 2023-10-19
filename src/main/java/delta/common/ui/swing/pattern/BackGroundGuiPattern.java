@@ -15,7 +15,7 @@ import javax.swing.JViewport;
 import javax.swing.UIManager;
 import javax.swing.table.JTableHeader;
 
-import delta.common.ui.swing.DeltaFrame;
+import delta.common.ui.swing.Frame;
 import delta.common.ui.swing.GuiFactory;
 import delta.common.ui.swing.theme.Theme;
 
@@ -48,7 +48,7 @@ public class BackGroundGuiPattern extends DefaultGuiPattern {
   }
 
   @Override
-  public void patternize_Frame(DeltaFrame frame) {
+  public void patternize_Frame(Frame frame) {
     frame.getContentPane().setBackground(UIManager.getColor("background"));
   }
 

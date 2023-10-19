@@ -23,11 +23,6 @@
       <version>1.0</version>
     </dependency>
     <dependency>
-      <groupId>com.dam.delta4j</groupId>
-      <artifactId>delta-common-intf-ui</artifactId>
-      <version>1.25</version>
-    </dependency>
-    <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
       <version>3.13.0</version>

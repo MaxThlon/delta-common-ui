@@ -8,8 +8,8 @@ import java.util.List;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
-import delta.common.ui.swing.DeltaDialog;
-import delta.common.ui.swing.DeltaWindow;
+import delta.common.ui.swing.Dialog;
+import delta.common.ui.swing.Window;
 import delta.common.ui.swing.GuiFactory;
 import delta.common.ui.swing.icons.ApplicationIcons;
 
@@ -32,25 +32,25 @@ public class DefaultDialogController extends AbstractWindowController
    * Get the managed dialog.
    * @return the managed dialog.
    */
-  public DeltaDialog getDialog()
+  public Dialog getDialog()
   {
-    return (DeltaDialog)getWindow();
+    return (Dialog)getWindow();
   }
 
   /**
    * Build the managed window.
    * @return the managed window.
    */
-  protected DeltaWindow buildWindow()
+  protected Window buildWindow()
   {
     return build();
   }
 
-  protected DeltaDialog build()
+  protected Dialog build()
   {
-    DeltaWindow parentWindow=getParentWindow();
+    Window parentWindow=getParentWindow();
 
-    DeltaDialog dialog=GuiFactory.buildDialog(parentWindow);
+    Dialog dialog=GuiFactory.buildDialog(parentWindow);
     _window=dialog;
     JPanel backgroundPanel=GuiFactory.buildBackgroundPanel(new BorderLayout());
     dialog.setContentPane(backgroundPanel);
@@ -77,7 +77,7 @@ public class DefaultDialogController extends AbstractWindowController
    */
   public void show(boolean modal)
   {
-    DeltaDialog dialog=getDialog();
+    Dialog dialog=getDialog();
     dialog.setModal(modal);
     dialog.setVisible(true);
   }
@@ -87,7 +87,7 @@ public class DefaultDialogController extends AbstractWindowController
    */
   public void bringToFront()
   {
-    DeltaDialog dialog=getDialog();
+    Dialog dialog=getDialog();
     dialog.setVisible(true);
     dialog.toFront();
   }
@@ -98,7 +98,7 @@ public class DefaultDialogController extends AbstractWindowController
    */
   public void setTitle(String title)
   {
-    DeltaDialog dialog=getDialog();
+    Dialog dialog=getDialog();
     dialog.setTitle(title);
   }
 }

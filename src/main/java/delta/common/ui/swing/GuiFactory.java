@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.LayoutManager;
 import java.awt.Paint;
-import java.awt.Window;
 import java.awt.image.BufferedImage;
 import java.util.stream.Stream;
 
@@ -34,7 +33,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.JTableHeader;
-import javax.swing.tree.TreeNode;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 
 import delta.common.ui.swing.file.DeltaJFileChooser;
 import delta.common.ui.swing.icons.IconsManager;
@@ -131,7 +131,9 @@ public abstract class GuiFactory
    */
   public static void init() {
     if (_guiPatternManager == null) {
-      _guiPatternManager = new GuiPatternManager(new GuiPatternConfiguration());
+      _guiPatternManager = new GuiPatternManager(
+          new GuiPatternConfiguration(null)
+     );
     }
     _guiPatternManager.initialize();
     if (_guiPatternFactory == null) {
@@ -151,22 +153,22 @@ public abstract class GuiFactory
    * Get a new frame.
    * @return a new frame.
    */
-  public static DeltaFrame buildFrame()
+  public static Frame buildFrame()
   {
-    DeltaFrame frame=_guiPatternFactory.buildFrame();
+    Frame frame=_guiPatternFactory.buildFrame();
     getGuiPattern().patternize_Frame(frame);
     return frame;
   }
 
   /**
    * Get a new dialog.
-   * @param owner the {@code DeltaWindow} from which the dialog is displayed or
+   * @param owner the {@code Window} from which the dialog is displayed or
    *     {@code null} if this dialog has no owner
    * @return a new dialog.
    */
-  public static DeltaDialog buildDialog(DeltaWindow owner)
+  public static Dialog buildDialog(Window owner)
   {
-    DeltaDialog dialog=_guiPatternFactory.buildDialog(owner);
+    Dialog dialog=_guiPatternFactory.buildDialog(owner);
     return dialog;
   }
 
@@ -174,7 +176,7 @@ public abstract class GuiFactory
    * Get a new fileChooser.
    * @return a new fileChooser.
    */
-  public static DeltaFileChooser buildFileChooser()
+  public static FileChooser buildFileChooser()
   {
     return new DeltaJFileChooser();
   }
@@ -393,23 +395,13 @@ public abstract class GuiFactory
 
   /**
    * Get a new tree.
-   * @param rootNode 
    * @return a new tree.
    */
-  public static JTree buildTree (TreeNode rootNode)
+  public static JTree buildTree()
   {
-    JTree tree=new JTree ();
-    /*tree.setForeground(FOREGROUND);
-    if (USE_BACKGROUND_PATTERN)
-    {
-      tree.setOpaque(false);
-      tree.setBackground(new Color(0,true));
-    }
-    else
-    {
-      tree.setBackground(BACKGROUND);
-      tree.setOpaque(true);
-    }*/
+    DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode("root");
+    JTree tree=new JTree(new DefaultTreeModel(rootNode));
+
     return tree;
   }
 
@@ -540,7 +532,7 @@ public abstract class GuiFactory
    * @param optionType Options configuration.
    * @return A result code (see {@link JOptionPane}).
    */
-  public static int showQuestionDialog(DeltaComponent parent, String message, String title, int optionType) {
+  public static int showQuestionDialog(delta.common.ui.swing.Component parent, String message, String title, int optionType) {
     return showQuestionDialog((parent instanceof Component)?(Component)parent:null, message, title, optionType);
   }
 
@@ -561,7 +553,7 @@ public abstract class GuiFactory
    * @param message Information message.
    * @param title Title of the dialog window.
    */
-  public static void showInformationDialog(DeltaComponent parent, String message, String title)
+  public static void showInformationDialog(delta.common.ui.swing.Component parent, String message, String title)
   {
     showInformationDialog((parent instanceof Component)?(Component)parent:null,message,title);
   }
@@ -583,7 +575,7 @@ public abstract class GuiFactory
    * @param message Information message.
    * @param title Title of the dialog window.
    */
-  public static void showErrorDialog(DeltaComponent parent, String message, String title)
+  public static void showErrorDialog(delta.common.ui.swing.Component parent, String message, String title)
   {
     showErrorDialog((parent instanceof Component)?(Component)parent:null,message,title);
   }
@@ -594,9 +586,9 @@ public abstract class GuiFactory
    * @param c the component
    * @return the first ancestor of c that's a Window or the last Applet ancestor
    */
-  public static DeltaComponent getRoot(Component c) {
+  public static delta.common.ui.swing.Component getRoot(Component c) {
     Component root=SwingUtilities.getRoot(c);
-    return (root instanceof DeltaComponent)?(DeltaComponent)root:null;
+    return (root instanceof delta.common.ui.swing.Component)?(delta.common.ui.swing.Component)root:null;
   }
   
   /**
@@ -609,8 +601,8 @@ public abstract class GuiFactory
    *         {@code null} if <code>c</code> is not contained inside a
    *         <code>Window</code>.
    */
-  public static DeltaWindow getWindowAncestor(Component c) {
-    Window window=SwingUtilities.getWindowAncestor(c);
-    return (window instanceof DeltaWindow)?(DeltaWindow)window:null;
+  public static delta.common.ui.swing.Window getWindowAncestor(Component c) {
+    java.awt.Window window=SwingUtilities.getWindowAncestor(c);
+    return (window instanceof delta.common.ui.swing.Window)?(Window)window:null;
   }
 }

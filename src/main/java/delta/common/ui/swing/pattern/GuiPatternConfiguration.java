@@ -1,9 +1,11 @@
 package delta.common.ui.swing.pattern;
 
+import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import delta.common.ui.swing.theme.Theme;
+import delta.common.utils.application.config.path.ApplicationPathConfiguration;
 import delta.common.utils.misc.Preferences;
 import delta.common.utils.misc.TypedProperties;
 
@@ -18,6 +20,7 @@ public class GuiPatternConfiguration
   private static final String GUI_PATTERN_NAME="patternName";
   private static final String GUI_PATTERN_THEME_NAME="themeName";
   private static final String GUI_PATTERN_SKIN_PATH="skinPath";
+
   /**
    * Default gui pattern name
    */
@@ -31,20 +34,25 @@ public class GuiPatternConfiguration
    */
   public static final String DEFAULT_THEME_NAME=null;
   
+  private static final Path SKINS_PATH=Paths.get("skins");
   /**
    * Default skin name
    */
   public static final String DEFAULT_SKIN_NAME="None";
+  private static String SKIN_DEFINITION_FILENAME="SkinDefinition.xml";
 
+  private ApplicationPathConfiguration _userPathConfiguration;
   private String _guiPatternFactoryName=DEFAULT_GUI_PATTERN_FACTORY_NAME;
   private Theme _theme=new Theme(DEFAULT_GUI_PATTERN_NAME, DEFAULT_THEME_NAME);
-  private Path _skinPath=null;
+  protected Path _skinPath=null;
 
   /**
    * Constructor.
+   * @param userPathConfiguration .
    */
-  public GuiPatternConfiguration() {}
-  
+  public GuiPatternConfiguration(ApplicationPathConfiguration userPathConfiguration) {
+    _userPathConfiguration=userPathConfiguration;
+  }
   
   /**
    * Get the gui pattern factory name.
@@ -81,14 +89,24 @@ public class GuiPatternConfiguration
   {
     _theme=theme;
   }
-  
+
+  /**
+   * Get the user data path for skins.
+   * @return a directory path.
+   */
+  public Path getSkinsPath()
+  {
+    return _userPathConfiguration.getUserPath().resolve(SKINS_PATH);
+  }
+
   /**
    * Get the current skin path.
    * @return a skin path.
    */
   public Path getSkinPath()
   {
-    return _skinPath;
+    Path skinsPath=getSkinsPath();
+    return ((skinsPath != null) && (_skinPath != null))?skinsPath.resolve(_skinPath):null;
   }
   
   /**
@@ -99,6 +117,16 @@ public class GuiPatternConfiguration
   {
     _skinPath=skinPath;
   }
+  
+  /**
+   * Get the current skin path.
+   * @return a skin path.
+   */
+  public File getSkinDefinitionFile()
+  {
+    Path skinPath=getSkinPath();
+    return (skinPath != null)?getSkinPath().resolve(SKIN_DEFINITION_FILENAME).toFile():null;
+  }
 
   /**
    * Initialize from preferences.
@@ -107,7 +135,14 @@ public class GuiPatternConfiguration
   public void fromPreferences(Preferences preferences)
   {
     TypedProperties props=preferences.getPreferences(GUI_PATTERN_CONFIGURATION);
-
+    FromProperties(props);
+  }
+  
+  /**
+   * Initialize from typed properties.
+   * @param props
+   */
+  protected void FromProperties(TypedProperties props) {
     String guiPatternFactoryName=props.getStringProperty(GUI_PATTERN_FACTORY_NAME,getGuiPatternFactoryName());
     setGuiPatternFactoryName(guiPatternFactoryName);
     
@@ -127,6 +162,15 @@ public class GuiPatternConfiguration
   public void save(Preferences preferences)
   {
     TypedProperties props=preferences.getPreferences(GUI_PATTERN_CONFIGURATION);
+    save(props);
+  }
+  
+  /**
+   * Save typed properties.
+   * @param props typed properties to use.
+   */
+  protected void save(TypedProperties props)
+  {
     props.setStringProperty(GUI_PATTERN_FACTORY_NAME,_guiPatternFactoryName);
     props.setStringProperty(GUI_PATTERN_NAME,_theme.getGuiPatternName());
     if (_theme.getThemeName()==null) {
@@ -134,6 +178,7 @@ public class GuiPatternConfiguration
     } else {
       props.setStringProperty(GUI_PATTERN_THEME_NAME,_theme.getThemeName());
     }
+
     if (_skinPath==null) {
       props.removeProperty(GUI_PATTERN_SKIN_PATH);
     } else {

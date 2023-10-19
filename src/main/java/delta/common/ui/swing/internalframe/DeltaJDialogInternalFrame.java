@@ -1,13 +1,12 @@
-package delta.common.ui.swing.windows;
+package delta.common.ui.swing.internalframe;
 
-import delta.common.ui.swing.DeltaDialog;
-import delta.common.ui.swing.internalframe.DeltaJInternalFrame;
+import delta.common.ui.swing.Dialog;
 
 /**
  * DeltaJInternalFrame.
  * @author MaxThlon
  */
-public class DeltaJDialogInternalFrame extends DeltaJInternalFrame implements DeltaDialog {
+public class DeltaJDialogInternalFrame extends DeltaJInternalFrame implements Dialog {
   
   /**
    * Constructor

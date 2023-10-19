@@ -1,6 +1,5 @@
 package delta.common.ui.swing.windows;
 
-import java.awt.Window;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
@@ -8,8 +7,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
-
-import delta.common.ui.swing.DeltaWindow;
 
 /**
  * Manages a set of windows.
@@ -54,7 +51,7 @@ public class WindowsManager
     String id=controller.getWindowIdentifier();
     if ((id!=null) && (id.length()>0))
     {
-      DeltaWindow window=controller.getWindow();
+      delta.common.ui.swing.Window window=controller.getWindow();
       if (window!=null)
       {
         WindowListener wl=new WindowTracker(id);
@@ -83,7 +80,7 @@ public class WindowsManager
 
     public void windowClosed(WindowEvent e)
     {
-      Window w=e.getWindow();
+      java.awt.Window w=e.getWindow();
       w.removeWindowListener(this);
       _controllers.remove(_id);
     }

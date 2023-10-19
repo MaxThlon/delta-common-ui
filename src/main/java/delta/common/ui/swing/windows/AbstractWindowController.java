@@ -8,7 +8,7 @@ import java.awt.event.WindowListener;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
-import delta.common.ui.swing.DeltaWindow;
+import delta.common.ui.swing.Window;
 import delta.common.ui.swing.GuiFactory;
 import delta.common.ui.swing.area.AbstractAreaController;
 import delta.common.utils.context.Context;
@@ -30,7 +30,7 @@ public abstract class AbstractWindowController extends AbstractAreaController im
   /**
    * Managed window.
    */
-  protected DeltaWindow _window;
+  protected Window _window;
   /**
    * Listener for window close events.
    */
@@ -74,7 +74,7 @@ public abstract class AbstractWindowController extends AbstractAreaController im
    * Get the managed window.
    * @return the managed window.
    */
-  public DeltaWindow getWindow()
+  public Window getWindow()
   {
     if (_window==null)
     {
@@ -89,7 +89,7 @@ public abstract class AbstractWindowController extends AbstractAreaController im
    * Get the window.
    * @return a window or <code>null</code> if not built.
    */
-  protected DeltaWindow getUnsafeWindow()
+  protected Window getUnsafeWindow()
   {
     return _window;
   }
@@ -118,7 +118,7 @@ public abstract class AbstractWindowController extends AbstractAreaController im
    * Build the managed window.
    * @return the managed window.
    */
-  protected abstract DeltaWindow buildWindow();
+  protected abstract Window buildWindow();
 
   protected JComponent buildContents()
   {
@@ -146,9 +146,9 @@ public abstract class AbstractWindowController extends AbstractAreaController im
    * Get the parent window.
    * @return A window or <code>null</code>.
    */
-  public DeltaWindow getParentWindow()
+  public Window getParentWindow()
   {
-    DeltaWindow parentWindow=null;
+    Window parentWindow=null;
     if (_parent!=null)
     {
       parentWindow=_parent.getWindow();
@@ -208,7 +208,7 @@ public abstract class AbstractWindowController extends AbstractAreaController im
       WindowController parentController=getParentController();
       if (parentController!=null)
       {
-        DeltaWindow parentWindow=parentController.getWindow();
+        Window parentWindow=parentController.getWindow();
         _window.setLocationRelativeTo(parentWindow);
       }
     }

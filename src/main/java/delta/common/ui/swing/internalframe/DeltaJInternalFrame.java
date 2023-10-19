@@ -29,14 +29,12 @@ import javax.swing.event.InternalFrameListener;
 
 import org.apache.log4j.Logger;
 
-import delta.common.ui.swing.DeltaComponent;
-import delta.common.ui.swing.DeltaWindow;
 /**
  * DeltaJInternalFrame.
  * Dialog come from <a href=https://stackoverflow.com/questions/11177003/making-a-modal-jinternalframe>stackoverflow</a>
  * @author MaxThlon
  */
-public class DeltaJInternalFrame extends JInternalFrame implements DeltaWindow {
+public class DeltaJInternalFrame extends JInternalFrame implements delta.common.ui.swing.Window {
 
   /**
    * Glass pane to overlay. Listens for mouse clicks and sets selected
@@ -168,10 +166,10 @@ public class DeltaJInternalFrame extends JInternalFrame implements DeltaWindow {
     }
 
     /**
-     * @return DeltaWindow {@code DeltaWindow}
+     * @return Window {@code Window}
      */
-    public DeltaWindow getDeltaWindow() {
-      return (source instanceof DeltaWindow)? (DeltaWindow)source : null;
+    public Window getWindow() {
+      return (source instanceof Window)? (Window)source : null;
     }
   }
 
@@ -194,17 +192,17 @@ public class DeltaJInternalFrame extends JInternalFrame implements DeltaWindow {
    * @param parent
    */
   public DeltaJInternalFrame(DeltaJInternalFrame parent) {
-      super();
-      _parent=parent;
-      if (parent != null) {
-        parent.setChildFrame(this);
-      }
-      setFocusTraversalKeysEnabled(false);
-      // Add glass pane
-      ModalityInternalGlassPane glassPane = new ModalityInternalGlassPane(this);
-      setGlassPane(glassPane);
-      // Add frame veto listener
-      addFrameVetoListener();
+    super();
+    _parent=parent;
+    if (parent != null) {
+      parent.setChildFrame(this);
+    }
+    setFocusTraversalKeysEnabled(false);
+    // Add glass pane
+    ModalityInternalGlassPane glassPane = new ModalityInternalGlassPane(this);
+    setGlassPane(glassPane);
+    // Add frame veto listener
+    addFrameVetoListener();
   }
 
   @Override
@@ -358,7 +356,7 @@ public class DeltaJInternalFrame extends JInternalFrame implements DeltaWindow {
   }
 
   @Override
-  public void setLocationRelativeTo(DeltaComponent c) {
+  public void setLocationRelativeTo(delta.common.ui.swing.Component c) {
     Component component=null;
     if (c instanceof Component) component=(Component)c;
     setLocationRelativeTo(component);

@@ -5,8 +5,8 @@ import java.awt.Container;
 
 import javax.swing.JPanel;
 
-import delta.common.ui.swing.DeltaDialog;
-import delta.common.ui.swing.DeltaWindow;
+import delta.common.ui.swing.Dialog;
+import delta.common.ui.swing.Window;
 import delta.common.ui.swing.windows.DefaultDialogController;
 import delta.common.ui.swing.windows.WindowController;
 
@@ -79,7 +79,7 @@ public class NavigatorWindowController extends DefaultDialogController
     {
       disposeCurrentPanel();
       _contentsController=panelController;
-      DeltaDialog dialog=getDialog();
+      Dialog dialog=getDialog();
       Container container=dialog.getContentPane();
       container.removeAll();
       // Contents
@@ -95,7 +95,7 @@ public class NavigatorWindowController extends DefaultDialogController
       WindowController controller=getParentController();
       if (controller!=null)
       {
-        DeltaWindow parentWindow=controller.getWindow();
+        Window parentWindow=controller.getWindow();
         dialog.setLocationRelativeTo(parentWindow);
       }
       dialog.setResizable(true);
