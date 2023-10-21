@@ -1,12 +1,12 @@
 package delta.common.ui.swing.internalframe;
 
-import delta.common.ui.swing.Frame;
+import delta.common.ui.swing.JFrame;
 
 /**
  * DeltaJInternalFrame.
  * @author MaxThlon
  */
-public class DeltaJFrameInternalFrame extends DeltaJInternalFrame implements Frame {
+public class DeltaJFrameInternalFrame extends DeltaJInternalFrame implements JFrame {
 
   @Override
   public void setState(int state)

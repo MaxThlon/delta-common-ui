@@ -8,7 +8,8 @@ import javax.swing.JRootPane;
 /**
  * @author MaxThlon
  */
-public interface Dialog extends delta.common.ui.swing.Window
+@SuppressWarnings("javadoc")
+public interface JDialog extends delta.common.ui.swing.Window
 {
   void setTitle(String title);
   void setResizable(boolean resizable);

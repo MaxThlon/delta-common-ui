@@ -11,7 +11,7 @@ import javax.swing.WindowConstants;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
 
-import delta.common.ui.swing.Dialog;
+import delta.common.ui.swing.JDialog;
 import delta.common.ui.swing.GuiFactory;
 import delta.common.ui.swing.windows.DeltaJDialog;
 import delta.common.ui.swing.windows.DeltaJFrame;
@@ -28,8 +28,8 @@ public class DefaultGuiPatternFactory implements GuiPatternFactory {
   }
 
   @Override
-  public delta.common.ui.swing.Frame buildFrame() {
-    delta.common.ui.swing.Frame frame=new DeltaJFrame();
+  public delta.common.ui.swing.JFrame buildFrame() {
+    delta.common.ui.swing.JFrame frame=new DeltaJFrame();
     JPanel backgroundPanel=GuiFactory.buildBackgroundPanel(new BorderLayout());
     frame.setContentPane(backgroundPanel);
 
@@ -37,8 +37,8 @@ public class DefaultGuiPatternFactory implements GuiPatternFactory {
   }
   
   @Override
-  public Dialog buildDialog(delta.common.ui.swing.Window owner) {
-    Dialog dialog=new DeltaJDialog((java.awt.Window)owner);
+  public JDialog buildDialog(delta.common.ui.swing.Window owner) {
+    JDialog dialog=new DeltaJDialog((java.awt.Window)owner);
     dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
     return dialog;
   }

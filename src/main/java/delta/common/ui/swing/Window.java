@@ -6,6 +6,7 @@ import java.awt.event.WindowListener;
 /**
  * @author MaxThlon
  */
+@SuppressWarnings("javadoc")
 public interface Window extends delta.common.ui.swing.Container
 {
   void pack();

@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.JRootPane;
 import javax.swing.KeyStroke;
 
-import delta.common.ui.swing.Dialog;
+import delta.common.ui.swing.JDialog;
 import delta.common.ui.swing.Window;
 import delta.common.ui.swing.GuiFactory;
 import delta.common.ui.swing.OKCancelPanelController;
@@ -42,9 +42,9 @@ public class DefaultFormDialogController<T> extends DefaultDialogController
   }
 
   @Override
-  protected Dialog build()
+  protected JDialog build()
   {
-    Dialog dialog=super.build();
+    JDialog dialog=super.build();
     dialog.pack();
     WindowController controller=getParentController();
     if (controller!=null)
@@ -78,7 +78,7 @@ public class DefaultFormDialogController<T> extends DefaultDialogController
     return panel;
   }
 
-  private void initShortcuts(Dialog dialog)
+  private void initShortcuts(JDialog dialog)
   {
     // OK
     {
@@ -115,7 +115,7 @@ public class DefaultFormDialogController<T> extends DefaultDialogController
   private void removeShortcuts()
   {
     Window window=getUnsafeWindow();
-    Dialog dialog=(window instanceof Dialog)?(Dialog)window:null;
+    JDialog dialog=(window instanceof JDialog)?(JDialog)window:null;
     if (dialog != null)
     {
       // Enter

@@ -8,6 +8,7 @@ import java.awt.Rectangle;
 /**
  * @author MaxThlon
  */
+@SuppressWarnings("javadoc")
 public interface Component
 {
   int getWidth();

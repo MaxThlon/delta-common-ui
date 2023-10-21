@@ -10,7 +10,7 @@ import javax.swing.JMenuBar;
 import javax.swing.WindowConstants;
 
 import delta.common.ui.swing.Window;
-import delta.common.ui.swing.Frame;
+import delta.common.ui.swing.JFrame;
 import delta.common.ui.swing.GuiFactory;
 import delta.common.ui.swing.icons.ApplicationIcons;
 
@@ -41,10 +41,10 @@ public class DefaultWindowController extends AbstractWindowController
    * Get the managed frame.
    * @return the managed frame.
    */
-  public Frame getFrame()
+  public JFrame getFrame()
   {
     Window window=getWindow();
-    return (window instanceof Frame)?(Frame)window:null;
+    return (window instanceof JFrame)?(JFrame)window:null;
   }
 
   /**
@@ -56,9 +56,9 @@ public class DefaultWindowController extends AbstractWindowController
     return build();
   }
 
-  protected Frame build()
+  protected JFrame build()
   {
-    Frame frame=GuiFactory.buildFrame();
+    JFrame frame=GuiFactory.buildFrame();
     List<Image> icons=ApplicationIcons.getApplicationIcons();
     frame.setIconImages(icons);
     _window=frame;
@@ -87,7 +87,7 @@ public class DefaultWindowController extends AbstractWindowController
    */
   public void show()
   {
-    Frame frame=getFrame();
+    JFrame frame=getFrame();
     frame.setVisible(true);
   }
 
@@ -96,7 +96,7 @@ public class DefaultWindowController extends AbstractWindowController
    */
   public void bringToFront()
   {
-    Frame frame=getFrame();
+    JFrame frame=getFrame();
     frame.setVisible(true);
     frame.setState(java.awt.Frame.NORMAL);
     frame.toFront();
@@ -108,7 +108,7 @@ public class DefaultWindowController extends AbstractWindowController
    */
   public void setTitle(String title)
   {
-    Frame frame=getFrame();
+    JFrame frame=getFrame();
     frame.setTitle(title);
   }
 }

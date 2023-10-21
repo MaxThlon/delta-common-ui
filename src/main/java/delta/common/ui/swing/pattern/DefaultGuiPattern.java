@@ -19,7 +19,7 @@ import javax.swing.table.JTableHeader;
 
 import org.apache.log4j.Logger;
 
-import delta.common.ui.swing.Frame;
+import delta.common.ui.swing.JFrame;
 import delta.common.ui.swing.theme.Theme;
 
 /**
@@ -127,7 +127,7 @@ public class DefaultGuiPattern implements GuiPattern {
   }
 
   @Override
-  public void patternize_Frame(Frame frame) {}
+  public void patternize_Frame(JFrame frame) {}
 
   @Override
   public void patternize_panel(JPanel panel) {

@@ -153,9 +153,9 @@ public abstract class GuiFactory
    * Get a new frame.
    * @return a new frame.
    */
-  public static Frame buildFrame()
+  public static JFrame buildFrame()
   {
-    Frame frame=_guiPatternFactory.buildFrame();
+    JFrame frame=_guiPatternFactory.buildFrame();
     getGuiPattern().patternize_Frame(frame);
     return frame;
   }
@@ -166,9 +166,9 @@ public abstract class GuiFactory
    *     {@code null} if this dialog has no owner
    * @return a new dialog.
    */
-  public static Dialog buildDialog(Window owner)
+  public static JDialog buildDialog(Window owner)
   {
-    Dialog dialog=_guiPatternFactory.buildDialog(owner);
+    JDialog dialog=_guiPatternFactory.buildDialog(owner);
     return dialog;
   }
 

@@ -12,8 +12,8 @@ import java.awt.image.BufferedImage;
 import javax.swing.JDesktopPane;
 import javax.swing.JMenuBar;
 
-import delta.common.ui.swing.Dialog;
-import delta.common.ui.swing.Frame;
+import delta.common.ui.swing.JDialog;
+import delta.common.ui.swing.JFrame;
 import delta.common.ui.swing.Window;
 import delta.common.ui.swing.GuiFactory;
 import delta.common.ui.swing.internalframe.DeltaJDialogInternalFrame;
@@ -26,11 +26,11 @@ import delta.common.ui.swing.windows.DeltaJFrame;
  * @author MaxThlon
  */
 public class DesktopGuiPatternFactory extends BackGroundGuiPatternFactory {
-  private Frame _rootFrame=null;
+  private JFrame _rootFrame=null;
   JDesktopPane _jDesktopPane=null;
   @Override
-  public Frame buildFrame() {
-    Frame frame=null;
+  public JFrame buildFrame() {
+    JFrame frame=null;
 
     if (_rootFrame == null) {
       DeltaJFrame deltaJFrame=new DeltaJFrame();
@@ -111,7 +111,7 @@ public class DesktopGuiPatternFactory extends BackGroundGuiPatternFactory {
   }
   
   @Override
-  public Dialog buildDialog(Window owner) {
+  public JDialog buildDialog(Window owner) {
     DeltaJInternalFrame ownerInternalFrame=
         (owner != null) && (owner instanceof DeltaJInternalFrame)?(DeltaJInternalFrame)owner:null;
     

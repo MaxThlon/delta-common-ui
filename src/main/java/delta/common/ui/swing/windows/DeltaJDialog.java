@@ -7,7 +7,7 @@ import javax.swing.WindowConstants;
  * DeltaJDialog.
  * @author MaxThlon
  */
-public class DeltaJDialog extends JDialog implements delta.common.ui.swing.Dialog {
+public class DeltaJDialog extends JDialog implements delta.common.ui.swing.JDialog {
   /**
    * @param owner
    */

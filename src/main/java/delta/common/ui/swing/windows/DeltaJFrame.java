@@ -6,7 +6,7 @@ import javax.swing.JFrame;
  * DeltaJFrame.
  * @author MaxThlon
  */
-public class DeltaJFrame extends JFrame implements delta.common.ui.swing.Frame {
+public class DeltaJFrame extends JFrame implements delta.common.ui.swing.JFrame {
 
   @Override
   public void setLocationRelativeTo(delta.common.ui.swing.Component c) {

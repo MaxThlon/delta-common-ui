@@ -7,7 +7,8 @@ import javax.swing.JMenuBar;
 /**
  * @author MaxThlon
  */
-public interface Frame extends delta.common.ui.swing.Window
+@SuppressWarnings("javadoc")
+public interface JFrame extends delta.common.ui.swing.Window
 {
   String getTitle();
   void setTitle(String title);

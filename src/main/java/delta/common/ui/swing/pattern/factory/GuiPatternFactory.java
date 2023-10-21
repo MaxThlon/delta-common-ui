@@ -6,8 +6,8 @@ import java.awt.Paint;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 
-import delta.common.ui.swing.Dialog;
-import delta.common.ui.swing.Frame;
+import delta.common.ui.swing.JDialog;
+import delta.common.ui.swing.JFrame;
 import delta.common.ui.swing.Window;
 
 /**
@@ -25,7 +25,7 @@ public interface GuiPatternFactory {
    * Get a new frame.
    * @return a new frame.
    */
-  Frame buildFrame();
+  JFrame buildFrame();
 
   /**
    * Get a new dialog.
@@ -33,7 +33,7 @@ public interface GuiPatternFactory {
    *     {@code null} if this dialog has no owner
    * @return a new dialog.
    */
-  Dialog buildDialog(Window owner);
+  JDialog buildDialog(Window owner);
   
   /**
    * Build a background panel.
