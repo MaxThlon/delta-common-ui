@@ -35,6 +35,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.JTableHeader;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeModel;
 
 import delta.common.ui.swing.file.DeltaJFileChooser;
 import delta.common.ui.swing.icons.IconsManager;
@@ -395,12 +396,18 @@ public abstract class GuiFactory
 
   /**
    * Get a new tree.
+   * @param newModel .
    * @return a new tree.
    */
-  public static JTree buildTree()
+  public static JTree buildTree(TreeModel newModel)
   {
-    DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode("root");
-    JTree tree=new JTree(new DefaultTreeModel(rootNode));
+    JTree tree;
+    if (newModel != null) {
+      tree = new JTree(newModel);
+    } else {
+      DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode("root");
+      tree=new JTree(new DefaultTreeModel(rootNode));
+    }
 
     return tree;
   }

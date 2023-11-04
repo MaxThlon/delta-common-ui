@@ -5,6 +5,7 @@ import java.io.File;
 /**
  * @author MaxThlon
  */
+@SuppressWarnings("javadoc")
 public interface FileChooser extends delta.common.ui.swing.Component
 {
   void setDialogTitle(String dialogTitle);

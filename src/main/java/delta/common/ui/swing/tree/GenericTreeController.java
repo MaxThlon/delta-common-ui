@@ -38,7 +38,7 @@ public class GenericTreeController
   
   private JTree build()
   {
-    final JTree tree=GuiFactory.buildTree();
+    final JTree tree=GuiFactory.buildTree(null);
     tree.setEditable(true);
     tree.setRootVisible(false);
     tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
