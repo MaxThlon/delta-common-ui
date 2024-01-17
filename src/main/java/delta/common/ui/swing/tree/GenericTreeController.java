@@ -1,6 +1,8 @@
 package delta.common.ui.swing.tree;
 
 import javax.swing.JTree;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeSelectionModel;
 
 import delta.common.ui.swing.GuiFactory;
@@ -45,7 +47,33 @@ public class GenericTreeController
     tree.setShowsRootHandles(true);
     return tree;
   }
-  
+
+  /**
+   * Clear tree.
+   */
+  public void clear()
+  {
+    if (_tree!=null)
+    {
+      DefaultTreeModel treeModel = (DefaultTreeModel)_tree.getModel();
+      DefaultMutableTreeNode rootNode = (DefaultMutableTreeNode)treeModel.getRoot();
+      rootNode.removeAllChildren();
+      reload();
+    }
+  }
+
+  /**
+   * Reload tree.
+   */
+  public void reload()
+  {
+    if (_tree!=null)
+    {
+      DefaultTreeModel treeModel = (DefaultTreeModel)_tree.getModel();
+      treeModel.reload();
+    }
+  }
+
   /**
    * Release all managed resources.
    */

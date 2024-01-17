@@ -1,6 +1,7 @@
 package delta.common.ui.swing.tree;
 
 import java.awt.Component;
+import java.awt.Dimension;
 
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -13,6 +14,7 @@ import delta.common.ui.swing.panels.PanelController;
  * @author MaxThlon
  */
 public class PanelTreeCellRenderer extends DefaultTreeCellRenderer {
+  private Dimension _panelPreferredSize;
 
   /**
    * 
@@ -29,14 +31,19 @@ public class PanelTreeCellRenderer extends DefaultTreeCellRenderer {
     if (node.getUserObject() instanceof PanelController) {
       PanelController panelController=(PanelController)node.getUserObject();
 
-      component = panelController.getPanel();
+      component=panelController.getPanel();
+      panelController.getPanel().setPreferredSize(_panelPreferredSize);
     } else {
       component=super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
-      /*JLabel l = (JLabel)super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
-      l.setFont(tree.getFont().deriveFont(leaf ? 16f : 48f));*/
-      //height = tree.getRowHeight();
-      //height = leaf ? 20 : 60;
     }
+
     return component;
+  }
+
+  /**
+   * @param preferredSize .
+   */
+  public void setPanelPreferredSize(Dimension preferredSize) {
+    _panelPreferredSize=preferredSize;
   }
 }

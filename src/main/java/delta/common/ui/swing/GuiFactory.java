@@ -21,6 +21,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -451,6 +452,16 @@ public abstract class GuiFactory
   public static JMenu buildMenu(String label)
   {
     return new JMenu(label);
+  }
+
+  /**
+   * Build a PopupMenu.
+   * @return a PopupMenu.
+   */
+  public static JPopupMenu buildPopupMenu()
+  {
+    JPopupMenu popupMenu=new JPopupMenu();
+    return popupMenu;
   }
 
   /**
